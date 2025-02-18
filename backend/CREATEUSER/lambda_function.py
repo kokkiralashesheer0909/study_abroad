@@ -24,6 +24,18 @@ def calculate_secret_hash(username):
     dig = hmac.new(secret, msg=message.encode('utf-8'), digestmod=hashlib.sha256).digest()
     return base64.b64encode(dig).decode()
 
+# Function to check if email exists
+def check_email_exists(email):
+    try:
+        response = cognito.list_users(
+            UserPoolId=USER_POOL_ID,
+            Filter=f'email = "{email}"'
+        )
+        return len(response['Users']) > 0
+    except Exception as e:
+        print(f"Error checking email: {str(e)}")
+        return False
+
 def lambda_handler(event, context):
     try:
         # Parse request body
@@ -36,6 +48,18 @@ def lambda_handler(event, context):
         last_name = body['lastName']
         phone = body.get('phone', '')
         user_role = body['userRole']
+
+        # Check if email already exists
+        if check_email_exists(email):
+            return {
+                "statusCode": 400,
+                "headers": {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "Content-Type",
+                    "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+                },
+                "body": json.dumps({"message": "***Email already exists!!***."})
+            }
 
         # Generate unique user ID and custom username
         user_id = str(uuid.uuid4())
@@ -62,22 +86,14 @@ def lambda_handler(event, context):
             ]
         )
 
-        # Step 2: Confirm user's email (optional)
-        # Uncomment this for testing purposes only. In production, users should confirm their email via a verification code/link.
-        # cognito.admin_confirm_sign_up(
-        #     UserPoolId=USER_POOL_ID,
-        #     Username=email
-        # )
-
-        # Step 3: Add user to Cognito group based on their role
+        # Step 2: Add user to Cognito group based on their role
         cognito.admin_add_user_to_group(
             UserPoolId=USER_POOL_ID,
             Username=username,
             GroupName=user_role  # Ensure this group exists in Cognito (e.g., "student", "faculty", "admin")
         )
 
-
-        # Step 2: Store user details in DynamoDB
+        # Step 3: Store user details in DynamoDB
         table = dynamodb.Table(TABLE_NAME)
         table.put_item(
             Item={
@@ -106,7 +122,12 @@ def lambda_handler(event, context):
     except cognito.exceptions.UsernameExistsException:
         return {
             "statusCode": 400,
-            "body": json.dumps({"message": "User already exists."})
+            "headers": {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Content-Type",
+                "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+            },
+            "body": json.dumps({"message": "Username already exists."})
         }
 
     except Exception as e:
@@ -119,11 +140,3 @@ def lambda_handler(event, context):
             },
             "body": json.dumps({"message": f"Error signing up user: {str(e)}"})
         }
-
-
-
-#fix username exists exception
-#email verification
-
-
-
