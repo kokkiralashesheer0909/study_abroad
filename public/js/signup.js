@@ -86,11 +86,11 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Google Sign-In clicked');
         // Add your Google Sign-In logic here
     });
-
+    
     // Handle Login button redirect
     const loginBtn = document.querySelector('.top-login-btn');
     loginBtn.addEventListener('click', function () {
         console.log('Login clicked');
-        //window.location.href = 'give login page path'; // Redirect to login page
+        window.location.href = 'login.html'; // Redirect to login page
     });
 });
