@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             password: passwordInput.value,
             firstName: firstNameInput.value,
             lastName: lastNameInput.value,
-            phone: phoneInput.value || '', // Optional phone input
-            userRole: roleInput.value,
+            phone: phoneInput.value || '',
+            userRole: roleInput.value
         };
 
         try {
@@ -70,10 +70,10 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('Sign-up successful:', result);
 
             alert(`Sign-up successful! Welcome, ${result.username}. Please check your email for verification.`);
-            
-            // Optional: Redirect to login page after successful sign-up
-            //window.location.href = 'give login page path';
-            
+
+            // Redirect to verify page with the username as a URL parameter and auto-fill the role
+            // Redirect to verify page with username and role
+            window.location.href = `verify.html?username=${encodeURIComponent(result.username)}&role=${encodeURIComponent(roleInput.value)}`;
         } catch (error) {
             console.error('Error during sign-up:', error);
             alert(`Sign-up failed: ${error.message}`);
