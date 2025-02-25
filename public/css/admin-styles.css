@@ -116,55 +116,29 @@ body {
     transition: background-color 0.2s;
 }
 
+.create-group-btn:hover {
+    background-color: var(--tamu-maroon-dark);
+}
+
 .section-divider {
     height: 1px;
     background-color: var(--gray-300);
     margin: 2rem 0;
 }
 
-.scroll-container {
-    position: relative;
-    margin-top: 1rem;
+.groups-section {
+    margin-bottom: 2rem;
 }
 
-.scroll-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: var(--white);
-    border: 1px solid var(--gray-300);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    transition: all 0.2s;
+.groups-section h2 {
+    margin-bottom: 1.5rem;
 }
 
-.scroll-btn:hover {
-    background-color: var(--gray-100);
-}
-
-.scroll-btn.left {
-    left: -20px;
-}
-
-.scroll-btn.right {
-    right: -20px;
-}
-
-.cards-scroll-container {
-    overflow: hidden;
-    margin: 0 20px;
-}
-
-.cards-container {
-    display: flex;
+.groups-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    transition: transform 0.3s ease;
+    margin-bottom: 1rem;
 }
 
 .card {
@@ -175,8 +149,6 @@ body {
     cursor: pointer;
     transition: all 0.2s;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    min-width: 300px;
-    flex-shrink: 0;
 }
 
 .card:hover {
@@ -200,6 +172,30 @@ body {
     color: var(--text-color);
 }
 
+.row-hidden {
+    display: none;
+}
+
+.see-all-btn {
+    background-color: transparent;
+    color: var(--tamu-maroon);
+    border: 1px solid var(--tamu-maroon);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.see-all-btn:hover {
+    background-color: var(--tamu-maroon);
+    color: var(--white);
+}
+
+.see-all-btn.hidden {
+    display: none;
+}
+
 /* Right Sidebar Styles */
 .right-sidebar {
     background-color: var(--white);
@@ -207,14 +203,16 @@ body {
     border-left: 1px solid var(--gray-300);
 }
 
-.section-header {
+.messages-section h3,
+.requests-section h3 {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
-.section-header i {
+.messages-section h3 i,
+.requests-section h3 i {
     width: 20px;
     height: 20px;
     color: var(--gray-600);
@@ -231,7 +229,37 @@ body {
     font-size: 0.9rem;
 }
 
-/* Hide scrollbar */
-.cards-scroll-container::-webkit-scrollbar {
-    display: none;
+/* For Mobile Responsiveness */
+@media (max-width: 1200px) {
+    .container {
+        grid-template-columns: 200px 1fr 250px;
+    }
+    
+    .groups-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        grid-template-columns: 180px 1fr;
+    }
+    
+    .right-sidebar {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: none;
+    }
+    
+    .groups-grid {
+        grid-template-columns: 1fr;
+    }
 }

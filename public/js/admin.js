@@ -1,9 +1,37 @@
 // Initialize Lucide icons
 document.addEventListener('DOMContentLoaded', () => {
+    // Session validation (added)
+    const idToken = localStorage.getItem('idToken');
+    const userRole = localStorage.getItem('userRole')?.toLowerCase();
+    if (!idToken || userRole !== 'admin') {
+        window.location.href = 'login.html';
+        return;
+    }
+
     lucide.createIcons();
+    
+    // Populate cards for both sections
+    populateGroups();
+    
+    // Setup see all buttons
+    setupSeeAllButtons();
+    
+    // Setup create group button
+    setupCreateGroupButton();
+
+    // Logout button functionality (added)
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to log out?')) {
+                localStorage.clear(); // Clear session
+                window.location.href = 'login.html'; // Redirect to login
+            }
+        });
+    }
 });
 
-// Sample data for groups - now with 6 items each
+// Sample data for groups - 6 items in each array
 const currentGroups = [
     {
         id: 1,
@@ -94,6 +122,49 @@ const previousGroups = [
     }
 ];
 
+// Function to populate groups with initial 3 visible
+function populateGroups() {
+    const currentGroupsContainer = document.querySelector('.current-groups');
+    const previousGroupsContainer = document.querySelector('.previous-groups');
+    
+    // Clear existing content
+    currentGroupsContainer.innerHTML = '';
+    previousGroupsContainer.innerHTML = '';
+    
+    // Add current groups (initially first 3)
+    currentGroups.forEach((group, index) => {
+        const card = createCard(group);
+        
+        // Hide groups after first 3
+        if (index >= 3) {
+            card.classList.add('row-hidden');
+        }
+        
+        currentGroupsContainer.appendChild(card);
+    });
+    
+    // Add previous groups (initially first 3)
+    previousGroups.forEach((group, index) => {
+        const card = createCard(group);
+        
+        // Hide groups after first 3
+        if (index >= 3) {
+            card.classList.add('row-hidden');
+        }
+        
+        previousGroupsContainer.appendChild(card);
+    });
+    
+    // Hide "See All" buttons if there are 3 or fewer groups
+    if (currentGroups.length <= 3) {
+        document.querySelector('.see-all-btn[data-section="current"]').classList.add('hidden');
+    }
+    
+    if (previousGroups.length <= 3) {
+        document.querySelector('.see-all-btn[data-section="previous"]').classList.add('hidden');
+    }
+}
+
 // Function to create a card element
 function createCard(group) {
     const card = document.createElement('div');
@@ -117,30 +188,38 @@ function createCard(group) {
 // Function to handle card clicks
 function handleCardClick(group) {
     console.log(`Clicked group: ${group.name}`);
+    // Additional functionality can be added here
 }
 
-// Function to handle scrolling
-function initializeScroll(section) {
-    const container = section.querySelector('.cards-container');
-    const leftBtn = section.querySelector('.scroll-btn.left');
-    const rightBtn = section.querySelector('.scroll-btn.right');
-    const scrollAmount = 330; // card width + gap
-
-    leftBtn.addEventListener('click', () => {
-        container.style.transform = `translateX(${Math.min(0, parseInt(container.style.transform?.slice(11) || 0) + scrollAmount)}px)`;
-        updateScrollButtons(section);
+// Setup see all buttons functionality
+function setupSeeAllButtons() {
+    const seeAllButtons = document.querySelectorAll('.see-all-btn');
+    
+    seeAllButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const section = button.getAttribute('data-section');
+            const container = document.querySelector(`.${section}-groups`);
+            const hiddenCards = container.querySelectorAll('.row-hidden');
+            
+            // Show all hidden cards
+            hiddenCards.forEach(card => {
+                card.classList.remove('row-hidden');
+            });
+            
+            // Hide the "See All" button after it's clicked
+            button.classList.add('hidden');
+        });
     });
-
-    rightBtn.addEventListener('click', () => {
-        const maxScroll = -(container.scrollWidth - container.parentElement.clientWidth);
-        container.style.transform = `translateX(${Math.max(maxScroll, parseInt(container.style.transform?.slice(11) || 0) - scrollAmount)}px)`;
-        updateScrollButtons(section);
-    });
-
-    // Initial button state
-    updateScrollButtons(section);
 }
 
-function updateScrollButtons(section) {
-    const container = section.querySelector
+// Setup create group button functionality
+function setupCreateGroupButton() {
+    const createGroupBtn = document.querySelector('.create-group-btn');
+    
+    if (createGroupBtn) {
+        createGroupBtn.addEventListener('click', () => {
+            console.log('Create group button clicked');
+            // Additional dropdown functionality can be added here
+        });
+    }
 }
