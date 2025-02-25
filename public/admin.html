@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAMU Admin Dashboard</title>
+    <link rel="stylesheet" href="css/admin-styles.css">
+    <!-- Include Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-pic"></div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item">
+                    <i data-lucide="user"></i>
+                    Profile
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="bell"></i>
+                    Notifications
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="shield"></i>
+                    Sign-in & Security
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="help-circle"></i>
+                    Help
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="settings"></i>
+                    Account Settings
+                </a>
+            </nav>
+            <button class="logout-btn">
+                <i data-lucide="log-out"></i>
+                Log Out
+            </button>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header-container">
+                <h1>Welcome to Admin Dashboard</h1>
+                <button class="create-group-btn">
+                    + Create Group
+                    <i data-lucide="chevron-down"></i>
+                </button>
+            </div>
+
+            <!-- Current Groups Section -->
+            <section class="groups-section">
+                <h2>Current Groups</h2>
+                <div class="cards-scroll-container">
+                    <div class="cards-container current-groups">
+                        <div class="card" data-id="1">
+                            <div class="card-collapse">
+                                <i data-lucide="chevron-left"></i>
+                            </div>
+                            <h3>ISTM 631 Group A</h3>
+                            <div class="card-info">
+                                <p>Members: <span>25</span></p>
+                                <p>Faculty: <span>Dr. Sarah Martinez</span></p>
+                                <p>Last Active: <span>2 hours ago</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Previous Groups Section -->
+            <section class="groups-section">
+                <h2>Previous Groups</h2>
+                <div class="cards-scroll-container">
+                    <div class="cards-container previous-groups">
+                        <div class="card" data-id="4">
+                            <div class="card-collapse">
+                                <i data-lucide="chevron-left"></i>
+                            </div>
+                            <h3>ISTM 631 Fall 2023</h3>
+                            <div class="card-info">
+                                <p>Members: <span>25</span></p>
+                                <p>Faculty: <span>Dr. Sarah Martinez</span></p>
+                                <p>Last Active: <span>3 months ago</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="messages-section">
+                <h3>
+                    <i data-lucide="message-square"></i>
+                    Messages
+                </h3>
+                <p class="no-messages">No new messages</p>
+            </div>
+            <div class="requests-section">
+                <h3>
+                    <i data-lucide="clipboard-list"></i>
+                    Requests
+                </h3>
+                <p class="no-requests">No new requests</p>
+            </div>
+        </aside>
+    </div>
+    <script src="js/admin.js"></script>
+</body>
+</html>
